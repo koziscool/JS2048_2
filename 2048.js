@@ -1,36 +1,41 @@
     
 
 var controller2048 = {
-	model: model2048,
+    model: model2048,
+    view: view2048,
 
-	init: function() {
-		this.model.init();
-		this.addTilesToGrid();
-	},
+    init: function() {
+        this.model.init();
+        this.view.updateTiles();
+    },
 
-	addTilesToGrid: function(  ) {
-		var $grid = $('.grid'), row, col, color;
-		for( var i = 0; i < this.model.tiles.length; i++ ){
-			var value = this.model.tiles[i];
-			var display = value ? value.toString() : ""
-			var $tileDiv = $("<div><div class='name'>" + display + "</div></div>");
-			$tileDiv.addClass('tile');
-			row = Math.floor( i / 4 );
-			col = i % 4;
-			color = this.model.getColor(value)
-			$tileDiv.css({
-				left: col*128,
-				top: row*128,
-				background: color
-			});
-			$grid.append( $tileDiv );
-		}
-	},	
+    handleKey: function(event){
+        switch (event.keyCode) {
+          case 37: // Left
+            model2048.moveLeft();
+            break;
+          case 38: // Up
+            model2048.moveUp();
+            break;
+          case 39: // Right
+            model2048.moveRight();
+            break;
+          case 40: // Down
+            model2048.moveDown();
+            break;
+        }
+        // this.setState(  );
+        view2048.updateTiles();
+        // this.model.logTiles();
+        // this.forceUpdate(  );
+    },
+
 
 };
 
 
 
 $(document).ready( function() {
-	controller2048.init();
+    controller2048.init();
+    window.addEventListener('keydown', controller2048.handleKey);
 });

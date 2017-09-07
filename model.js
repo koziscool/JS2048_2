@@ -21,6 +21,7 @@ var model2048 = {
 
   row: function(i) { return Math.floor( i/4 );},
   col: function(i) { return i % 4; },
+  index: function(row, col) { return 4*row + col; },
 
   getColor: function( value) { return this.colors[ Math.max( Math.floor(Math.log2( value )), 0 ) ]; },
 
@@ -45,28 +46,37 @@ var model2048 = {
     this.tiles[randomEmpty] = this.randomNewValue();
   },
 
-//   moveUp: function( ) {
-//     // console.log('move up');
+  moveUp: function( ) {
+    console.log('move up');
 
-//     for (var col = 0; col < this.numCols; col++ ){
-//       values = [];
-//       for (var row = 0; row < this.numCols; row++ ){
-//         values.push( this.getTile( row,  col) );
-//       }
+    for (var col = 0; col < this.numCols; col++ ){
+      var values = [];
+      var indexes = [];
+      for (var row = 0; row < this.numRows; row++ ){
+        var index = row * this.numCols + col
+        values.push( this.tiles[index] );
+        indexes.push( index );
+      }
 
-//       values = this.stripBlanks( values )
-//       this.collapseArray( values )
+      console.log(values);
+      values = this.stripBlanks( values )
+      console.log(values);
+      this.collapseArray( values )
+      console.log(values);
+      console.log();
 
-//       for (var row = 0; row < this.numCols; row++ ){
-//         if( values[row] ) {  
-//           this.setTile( row,  col, values[row] );
-//         } else {
-//           this.setTile( row,  col, 'blank' );
-//         }
-//       }
-//     }
-//     this.addNewSquare();
-//   },
+
+
+      for (var row = 0; row < this.numCols; row++ ){
+        if( values[row] ) {  
+          this.tiles[ indexes[row] ] = values[row];
+        } else {
+          this.tiles[ indexes[row] ] = 0;
+        }
+      }
+    }
+    this.addNewSquare();
+  },
 
 //   moveDown: function( ) {
 //     // console.log('move down');
@@ -143,31 +153,24 @@ var model2048 = {
 //     return retVal; 
 //   },
 
-//   stripBlanks: function( arr ) {
-//     retArray = []
-//     arr.forEach( function(elt) {
-//       if (elt !== 'blank') {
-//         retArray.push(elt)
-//       }
-//     });
-//     return retArray;
-//   },
+  stripBlanks: function( arr ) {
+    return arr.filter( function(elt){ return !!elt; })
+  },
 
-//   collapseArray: function( arr ){
-//     for ( var i = 0;  i < arr.length - 1 ; i++ ) {
+  collapseArray: function( arr ){
+    for ( var i = 0;  i < arr.length - 1 ; i++ ) {
 
-//       if ( arr[i] === 'blank' ) {
-//         arr[i] = arr[ i+1 ];
-//         arr[i+1] = 'blank';
-//       }
+      if ( !arr[i] ) {
+        arr[i] = arr[ i+1 ];
+        arr[i+1] = 0;
+      }
 
-//       if ( arr[i] === arr[i+1] ) {
-//         var newVal = 2 * (+arr[i]);
-//         arr[i] = newVal.toString();
-//         this.gameScore += newVal;
-//         arr[i+1] = 'blank';
-//       }
-//     }
-//   },
+      if ( arr[i] === arr[i+1] ) {
+        arr[i] *= 2;
+        this.gameScore += arr[i];
+        arr[i+1] = 0;
+      }
+    }
+  },
 
 };
