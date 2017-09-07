@@ -1,0 +1,20 @@
+
+.grid{
+	position: relative;
+}
+
+
+.tile{
+	height: 128px;
+	width: 128px;
+	position: absolute;
+	text-align: center;
+	border: 5px solid brown;
+}
+
+.name{
+	font-weight: bold;
+	color: white;
+	font-size: 36px;
+	transform: translateY(80%)
+}
