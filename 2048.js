@@ -12,16 +12,16 @@ var controller2048 = {
     handleKey: function(event){
         switch (event.keyCode) {
           case 37: // Left
-            model2048.moveLeft();
+            model2048.move( false, "r");
             break;
           case 38: // Up
-            model2048.moveUp();
+            model2048.move( false, "c");
             break;
           case 39: // Right
-            model2048.moveRight();
+            model2048.move( true, "r" );
             break;
           case 40: // Down
-            model2048.moveDown();
+            model2048.move( true, "c");
             break;
         }
         view2048.updateTiles();

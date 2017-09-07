@@ -1,7 +1,6 @@
 
 var model2048 = {
-  numRows: 4,
-  numCols: 4,
+  SIDE: 4,
   probabilityNewTwo: 0.9,
 
   colors: [ 'lightgray','orange', 'darkkhaki', 'firebrick', 'lightgreen', 'deepskyblue', 
@@ -17,9 +16,9 @@ var model2048 = {
     this.buildInitialGrid();
   },
 
-  row: function(i) { return Math.floor( i/4 );},
-  col: function(i) { return i % 4; },
-  index: function(row, col) { return 4*row + col; },
+  row: function(i) { return Math.floor( i / this.SIDE );},
+  col: function(i) { return i % this.SIDE; },
+  index: function(row, col) { return this.SIDE *row + col; },
 
   getColor: function( value) { return this.colors[ Math.max( Math.floor(Math.log2( value )), 0 ) ]; },
 
@@ -52,26 +51,25 @@ var model2048 = {
     this.tiles[randomEmpty] = this.randomNewValue();
   },
 
-  moveUp: function( ) {
-    this.newTiles = this.tiles.slice();
+  move: function( ascending, group_by ) {
 
-    for (var col = 0; col < this.numCols; col++ ){
+    this.newTiles = this.tiles.slice();
+    for (var i = 0; i < this.SIDE; i++ ){
       var values = [];
       var indexes = [];
-      for (var row = 0; row < this.numRows; row++ ){
-        values.push( this.newTiles[ this.index(row, col) ] );
-        indexes.push( this.index(row, col) );
+      var k, index;
+      for (var j = 0; j < this.SIDE; j++ ){
+        ascending ? k = this.SIDE - j - 1 : k = j;
+        group_by === "c" ? index = this.index(k, i) : index = this.index(i, k);
+        values.push( this.newTiles[ index ] );
+        indexes.push( index );
       }
 
       values = this.stripBlanks( values );
       this.collapseArray( values );
 
-      for (var row = 0; row < this.numCols; row++ ){
-        if( values[row] ) {  
-          this.newTiles[ indexes[row] ] = values[row];
-        } else {
-          this.newTiles[ indexes[row] ] = 0;
-        }
+      for (var j = 0; j < this.SIDE; j++ ){
+        values[j] ? this.newTiles[ indexes[j] ] = values[j] : this.newTiles[ indexes[j] ] = 0;
       }
     }
 
@@ -81,94 +79,7 @@ var model2048 = {
     }
   },
 
-  moveDown: function( ) {
-
-    this.newTiles = this.tiles.slice();
-    for (var col = 0; col < this.numCols; col++ ){
-      var values = [];
-      var indexes = [];
-      for (var row = this.numRows - 1; row >= 0; row-- ){
-        values.push( this.newTiles[this.index(row, col)] );
-        indexes.push( this.index(row, col) );
-      }
-
-      values = this.stripBlanks( values );
-      this.collapseArray( values );
-
-      for (var row = 0; row < this.numCols; row++ ){
-        if( values[row] ) {  
-          this.newTiles[ indexes[row] ] = values[row];
-        } else {
-          this.newTiles[ indexes[row] ] = 0;
-        }
-      }
-    }
-
-    if( this.notSameBoard( this.tiles, this.newTiles) ) {
-      this.tiles = this.newTiles;
-      this.addNewSquare();
-    }
-  },
-
-  moveLeft: function( ) {
-    this.newTiles = this.tiles.slice();
-
-    for (var row = 0; row < this.numRows; row++ ){
-      var values = [];
-      var indexes = [];
-      for (var col = 0; col < this.numCols; col++ ){
-        values.push( this.newTiles[this.index(row, col)] );
-        indexes.push( this.index(row, col) );
-      }
-
-      values = this.stripBlanks( values );
-      this.collapseArray( values );
-
-      for (var col = 0; col < this.numCols; col++ ){
-        if( values[col] ) {  
-          this.newTiles[ indexes[col] ] = values[col];
-        } else {
-          this.newTiles[ indexes[col] ] = 0;
-        }
-      }
-    }
-
-    if( this.notSameBoard( this.tiles, this.newTiles) ) {
-      this.tiles = this.newTiles;
-      this.addNewSquare();
-    }
-  },
-
-
-  moveRight: function( ) {
-    this.newTiles = this.tiles.slice();
-
-    for (var row = 0; row < this.numRows; row++ ){
-      var values = [];
-      var indexes = [];
-      for (var col = this.numCols - 1; col >= 0; col-- ){
-        values.push( this.newTiles[this.index(row, col)] );
-        indexes.push( this.index(row, col) );
-      }
-
-      values = this.stripBlanks( values );
-      this.collapseArray( values );
-
-      for (var col = 0; col < this.numCols; col++ ){
-        if( values[col] ) {  
-          this.newTiles[ indexes[col] ] = values[col];
-        } else {
-          this.newTiles[ indexes[col] ] = 0;
-        }
-      }
-    }
-
-    if( this.notSameBoard( this.tiles, this.newTiles) ) {
-      this.tiles = this.newTiles;
-      this.addNewSquare();
-    }
-  },
-
+  
   stripBlanks: function( arr ) {
     return arr.filter( function(elt){ return !!elt; })
   },
