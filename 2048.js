@@ -18,7 +18,6 @@ var controller2048 = {
 			row = Math.floor( i / 4 );
 			col = i % 4;
 			color = this.model.getColor(value)
-			console.log(value, display, color);
 			$tileDiv.css({
 				left: col*128,
 				top: row*128,

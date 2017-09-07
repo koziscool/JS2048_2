@@ -17,7 +17,6 @@ var model2048 = {
 
   init: function() {
     this.buildInitialGrid();
-    console.log(this.tiles);
   },
 
   row: function(i) { return Math.floor( i/4 );},
@@ -25,14 +24,7 @@ var model2048 = {
 
   getColor: function( value) { return this.colors[ Math.max( Math.floor(Math.log2( value )), 0 ) ]; },
 
-  randomNewValue: function() {
-    if ( Math.random() < this.probabilityNewTwo ) {
-      return '2';
-    }
-    else {
-      return '4';
-    }
-  },
+  randomNewValue: function() { return Math.random() < this.probabilityNewTwo ? 2 : 4; },
 
   buildInitialGrid: function() {
     this.addNewSquare();
