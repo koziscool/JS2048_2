@@ -47,8 +47,6 @@ var model2048 = {
   },
 
   moveUp: function( ) {
-    console.log('move up');
-
     for (var col = 0; col < this.numCols; col++ ){
       var values = [];
       var indexes = [];
@@ -58,14 +56,8 @@ var model2048 = {
         indexes.push( index );
       }
 
-      console.log(values);
-      values = this.stripBlanks( values )
-      console.log(values);
-      this.collapseArray( values )
-      console.log(values);
-      console.log();
-
-
+      values = this.stripBlanks( values );
+      this.collapseArray( values );
 
       for (var row = 0; row < this.numCols; row++ ){
         if( values[row] ) {  
@@ -78,80 +70,78 @@ var model2048 = {
     this.addNewSquare();
   },
 
-//   moveDown: function( ) {
-//     // console.log('move down');
-//     for (var col = 0; col < this.numCols; col++ ){
-//       values = [];
-//       for (var row = this.numCols  - 1; row >= 0; row-- ){
-//         values.push( this.getTile( row,  col) );
-//       }
+  moveDown: function( ) {
+    for (var col = 0; col < this.numCols; col++ ){
+      var values = [];
+      var indexes = [];
+      for (var row = this.numRows - 1; row >= 0; row-- ){
+        var index = row * this.numCols + col;
+        values.push( this.tiles[index] );
+        indexes.push( index );
+      }
 
-//       values = this.stripBlanks( values )
-//       this.collapseArray( values )
+      values = this.stripBlanks( values );
+      this.collapseArray( values );
 
-//       for (var row = this.numRows - 1; row >= 0; row-- ){
-//         if( values[this.numRows - 1 - row] ) {  
-//           this.setTile( row,  col, values[ this.numRows - 1 - row]  );
-//         } else {
-//           this.setTile( row,  col, 'blank' );
-//         }
-//       }
-//     }
-//     this.addNewSquare();
-//   },
+      for (var row = 0; row < this.numCols; row++ ){
+        if( values[row] ) {  
+          this.tiles[ indexes[row] ] = values[row];
+        } else {
+          this.tiles[ indexes[row] ] = 0;
+        }
+      }
+    }
+    this.addNewSquare();
+  },
 
-//   moveLeft: function( ) {
-//     // console.log('move left');
-//     for (var row = 0; row < this.numRows; row++ ){
-//       values = [];
-//       for (var col = 0; col < this.numCols; col++ ){
-//         values.push( this.getTile( row,  col) );
-//       }
+  moveLeft: function( ) {
+    for (var row = 0; row < this.numRows; row++ ){
+      var values = [];
+      var indexes = [];
+      for (var col = 0; col < this.numCols; col++ ){
+        var index = row * this.numCols + col;
+        values.push( this.tiles[index] );
+        indexes.push( index );
+      }
 
-//       values = this.stripBlanks( values )
-//       this.collapseArray( values )
+      values = this.stripBlanks( values );
+      this.collapseArray( values );
 
-//       for (var col = 0; col < this.numCols; col++ ){
-//         if( values[col] ) {  
-//           this.setTile( row,  col, values[col] );
-//         } else {
-//           this.setTile( row,  col, 'blank' );
-//         }
-//       }
-//     }
+      for (var col = 0; col < this.numCols; col++ ){
+        if( values[col] ) {  
+          this.tiles[ indexes[col] ] = values[col];
+        } else {
+          this.tiles[ indexes[col] ] = 0;
+        }
+      }
+    }
+    this.addNewSquare();
+  },
 
-//     this.addNewSquare();
-//   },
 
-//   moveRight: function( ) {
-//     // console.log('move right');
-//     for (var row = 0; row < this.numRows; row++ ){
-//       values = [];
-//       for (var col = this.numCols - 1; col >= 0; col-- ){
-//         values.push( this.getTile( row,  col) );
-//       }
+  moveRight: function( ) {
+    for (var row = 0; row < this.numRows; row++ ){
+      var values = [];
+      var indexes = [];
+      for (var col = this.numCols - 1; col >= 0; col-- ){
+        var index = row * this.numCols + col;
+        values.push( this.tiles[index] );
+        indexes.push( index );
+      }
 
-//       values = this.stripBlanks( values )
-//       this.collapseArray( values )
+      values = this.stripBlanks( values );
+      this.collapseArray( values );
 
-//       for (var col = this.numCols - 1; col >= 0; col-- ){
-//         if( values[this.numCols - 1 - col] ) {  
-//           this.setTile( row,  col, values[this.numCols - 1 - col] );
-//         } else {
-//           this.setTile( row,  col, 'blank' );
-//         }
-//       }
-//     }
-
-//     this.addNewSquare();
-//   },
-
-// ////
-
-//   notABlank: function( elt ) { 
-//     var retVal = ( elt != 'blank');
-//     return retVal; 
-//   },
+      for (var col = 0; col < this.numCols; col++ ){
+        if( values[col] ) {  
+          this.tiles[ indexes[col] ] = values[col];
+        } else {
+          this.tiles[ indexes[col] ] = 0;
+        }
+      }
+    }
+    this.addNewSquare();
+  },
 
   stripBlanks: function( arr ) {
     return arr.filter( function(elt){ return !!elt; })
