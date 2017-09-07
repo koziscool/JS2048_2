@@ -24,13 +24,8 @@ var controller2048 = {
             model2048.moveDown();
             break;
         }
-        // this.setState(  );
         view2048.updateTiles();
-        // this.model.logTiles();
-        // this.forceUpdate(  );
     },
-
-
 };
 
 
